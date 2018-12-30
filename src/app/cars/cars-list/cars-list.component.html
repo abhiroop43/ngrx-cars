@@ -8,8 +8,10 @@
     <th>Vehicle Type</th>
     <th>Color</th>
   </tr>
-  <tr *ngFor="let car of (cars$ | async)">
-    <td>{{ car.id }}</td>
+  <tr *ngFor="let car of (cars$ | async); index as i">
+    <td>
+      <a [routerLink]="['/car', i]"> {{ car.id }} </a>
+    </td>
     <td>{{ car.make }}</td>
     <td>{{ car.model }}</td>
     <td>{{ car.year }}</td>
@@ -18,3 +20,5 @@
     <td>{{ car.color }}</td>
   </tr>
 </table>
+
+<div><a [routerLink]="['/car', 'new']">Add New Car</a></div>

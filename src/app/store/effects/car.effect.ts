@@ -21,11 +21,10 @@ export class CarEffects {
   getCar$ = this._action$.pipe(
     ofType<GetCar>(ECarActions.GetCar),
     map(action => action.payload),
-    withLatestFrom(this._store.pipe(select(selectCarList))),
-    switchMap(([id, cars]) => {
-      const selectedCar = cars.filter(car => car.id === +id)[0];
-      return of(new GetCarSuccess(selectedCar));
-    })
+    switchMap(index => {
+      return this._carService.getCar(index);
+    }),
+    switchMap((car: ICar) => of(new GetCarSuccess(car)))
   );
 
   @Effect()

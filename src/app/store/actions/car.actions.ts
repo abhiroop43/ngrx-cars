@@ -5,7 +5,9 @@ export enum ECarActions {
   GetCars = '[Car] Get Cars',
   GetCarsSuccess = '[Car] Get Cars Success',
   GetCar = '[Car] Get Car',
-  GetCarSuccess = '[Car] Get Car Success'
+  GetCarSuccess = '[Car] Get Car Success',
+  AddCar = '[Car] Add Car',
+  AddCarSuccess = '[Car] Add Car Success'
 }
 
 export class GetCars implements Action {
@@ -19,12 +21,22 @@ export class GetCarsSuccess implements Action {
 
 export class GetCar implements Action {
   public readonly type = ECarActions.GetCar;
-  constructor(public payload: number) {}
+  constructor(public payload: string) {}
 }
 
 export class GetCarSuccess implements Action {
   public readonly type = ECarActions.GetCarSuccess;
   constructor(public payload: ICar) {}
+}
+
+export class AddCar implements Action {
+  public readonly type = ECarActions.AddCar;
+  constructor(public payload: ICar) {}
+}
+
+export class AddCarSuccess implements Action {
+  public readonly type = ECarActions.AddCarSuccess;
+  constructor(public payload: string) {}
 }
 
 export type CarActions = GetCars | GetCarsSuccess | GetCar | GetCarSuccess;

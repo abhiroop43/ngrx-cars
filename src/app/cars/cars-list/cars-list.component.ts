@@ -16,12 +16,9 @@ export class CarsListComponent implements OnInit {
 
   ngOnInit() {
     this._store.dispatch(new GetCars());
-    this.cars$.subscribe(res => {
-      console.log('test', res);
-    });
   }
 
-  navigateToCar(id: number) {
+  navigateToCar(id: string) {
     this._router.navigate(['car', id]);
   }
 }
