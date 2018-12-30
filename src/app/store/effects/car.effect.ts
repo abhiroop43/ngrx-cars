@@ -13,7 +13,7 @@ import {
   GetCarsSuccess
 } from '../actions/car.actions';
 import { selectCarList } from '../selectors/car.selectors';
-import { ICarHttp } from 'src/app/models/http-models/car-http.interface';
+import { ICar } from 'src/app/models/car.model';
 
 @Injectable()
 export class CarEffects {
@@ -29,10 +29,9 @@ export class CarEffects {
   );
 
   @Effect()
-  getCars$ = this._action$.pipe(
-    ofType<GetCars>(ECarActions.GetCars),
+  getCars$ = this._action$.ofType<GetCars>(ECarActions.GetCars).pipe(
     switchMap(() => this._carService.getCars()),
-    switchMap((carHttp: ICarHttp) => of(new GetCarsSuccess(carHttp.cars)))
+    switchMap((cars: ICar[]) => of(new GetCarsSuccess(cars)))
   );
 
   constructor(

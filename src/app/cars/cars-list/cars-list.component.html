@@ -8,7 +8,7 @@
     <th>Vehicle Type</th>
     <th>Color</th>
   </tr>
-  <tr *ngFor="let car of cars$ | async">
+  <tr *ngFor="let car of (cars$ | async)">
     <td>{{ car.id }}</td>
     <td>{{ car.make }}</td>
     <td>{{ car.model }}</td>

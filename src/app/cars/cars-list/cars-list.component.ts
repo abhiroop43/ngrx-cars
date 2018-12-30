@@ -4,7 +4,6 @@ import { IAppState } from 'src/app/store/state/app.state';
 import { Router } from '@angular/router';
 import { GetCars } from 'src/app/store/actions/car.actions';
 import { selectCarList } from 'src/app/store/selectors/car.selectors';
-import { ICarHttp } from 'src/app/models/http-models/car-http.interface';
 
 @Component({
   selector: 'app-cars-list',
@@ -17,6 +16,9 @@ export class CarsListComponent implements OnInit {
 
   ngOnInit() {
     this._store.dispatch(new GetCars());
+    this.cars$.subscribe(res => {
+      console.log('test', res);
+    });
   }
 
   navigateToCar(id: number) {
