@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CarsListComponent } from './cars/cars-list/cars-list.component';
@@ -19,7 +20,8 @@ import { CarService } from './services/car.service';
   declarations: [AppComponent, CarsListComponent, CarsEditComponent],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
     ReactiveFormsModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([CarEffects]),
