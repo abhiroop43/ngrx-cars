@@ -13,8 +13,12 @@ export class CarService {
     return <Observable<ICar[]>>this._db.list('cars').valueChanges();
   }
 
-  getCar(index: string): Observable<ICar> {
-    return <Observable<ICar>>this._db.object(`cars/${index}`).valueChanges();
+  getCar(index: string): Observable<ICar[]> {
+    // return <Observable<ICar>>this._db.object(`cars/${index}`).valueChanges();
+    console.log('Index is: ', index);
+    return <Observable<ICar[]>>(
+      this._db.list('cars', ref => ref.equalTo(index, 'id')).valueChanges()
+    );
   }
 
   addNewCar(car: ICar): Observable<string> {

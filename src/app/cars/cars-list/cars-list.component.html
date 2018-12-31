@@ -10,7 +10,7 @@
   </tr>
   <tr *ngFor="let car of (cars$ | async); index as i">
     <td>
-      <a [routerLink]="['/car', i]"> {{ car.id }} </a>
+      <a [routerLink]="['/car', car.id]"> {{ car.id }} </a>
     </td>
     <td>{{ car.make }}</td>
     <td>{{ car.model }}</td>

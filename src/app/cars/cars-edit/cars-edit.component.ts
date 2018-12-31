@@ -4,7 +4,8 @@ import { IAppState } from 'src/app/store/state/app.state';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { selectSelectedCar } from 'src/app/store/selectors/car.selectors';
-import { GetCar } from 'src/app/store/actions/car.actions';
+import { GetCar, AddCar } from 'src/app/store/actions/car.actions';
+import { ICar } from 'src/app/models/car.model';
 
 @Component({
   selector: 'app-cars-edit',
@@ -29,12 +30,26 @@ export class CarsEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this._route.snapshot.params.id != null) {
+    if (this._route.snapshot.params.id !== 'new') {
       this._store.dispatch(new GetCar(this._route.snapshot.params.id));
     }
   }
 
   onSubmit() {
     console.log(this.carEditForm.value);
+    const carToSubmit: ICar = this.carEditForm.value;
+    if (this._route.snapshot.params.id !== 'new') {
+      carToSubmit.id = this._route.snapshot.params.id;
+    } else {
+      carToSubmit.id = new Date().getTime();
+    }
+    carToSubmit.make = this.carEditForm.value.make;
+    carToSubmit.model = this.carEditForm.value.model;
+    carToSubmit.plateNumber = this.carEditForm.value.plateNumber;
+    carToSubmit.vehicleType = this.carEditForm.value.vehicleType;
+    carToSubmit.year = this.carEditForm.value.year;
+    carToSubmit.color = this.carEditForm.value.color;
+
+    this._store.dispatch(new AddCar(carToSubmit));
   }
 }
