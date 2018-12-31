@@ -10,7 +10,9 @@ import {
   ECarActions,
   GetCarSuccess,
   GetCars,
-  GetCarsSuccess
+  GetCarsSuccess,
+  AddCar,
+  AddCarSuccess
 } from '../actions/car.actions';
 import { selectCarList } from '../selectors/car.selectors';
 import { ICar } from 'src/app/models/car.model';
@@ -31,6 +33,16 @@ export class CarEffects {
   getCars$ = this._action$.ofType<GetCars>(ECarActions.GetCars).pipe(
     switchMap(() => this._carService.getCars()),
     switchMap((cars: ICar[]) => of(new GetCarsSuccess(cars)))
+  );
+
+  @Effect()
+  addCar$ = this._action$.pipe(
+    ofType<AddCar>(ECarActions.AddCar),
+    map(action => action.payload),
+    switchMap(car => {
+      return this._carService.addNewCar(car);
+    }),
+    switchMap((pushId: string) => of(new AddCarSuccess(pushId)))
   );
 
   constructor(

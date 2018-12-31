@@ -39,4 +39,4 @@ export class AddCarSuccess implements Action {
   constructor(public payload: string) {}
 }
 
-export type CarActions = GetCars | GetCarsSuccess | GetCar | GetCarSuccess;
+export type CarActions = GetCars | GetCarsSuccess | GetCar | GetCarSuccess | AddCar | AddCarSuccess;

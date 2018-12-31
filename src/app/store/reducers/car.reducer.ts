@@ -15,6 +15,12 @@ export const carReducers = (state = initialCarState, action: CarActions): ICarSt
         selectedCar: action.payload
       };
     }
+    case ECarActions.AddCarSuccess: {
+      return {
+        ...state,
+        newCarPushId: action.payload
+      };
+    }
     default:
       return state;
   }
