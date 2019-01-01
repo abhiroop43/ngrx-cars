@@ -18,7 +18,7 @@ export class CarsListComponent implements OnInit {
     this._store.dispatch(new GetCars());
   }
 
-  navigateToCar(id: string) {
+  navigateToCar(id: number) {
     this._router.navigate(['car', id]);
   }
 }

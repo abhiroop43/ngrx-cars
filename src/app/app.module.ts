@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CarsListComponent } from './cars/cars-list/cars-list.component';
@@ -22,6 +23,7 @@ import { CarService } from './services/car.service';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
+    AngularFirestoreModule,
     ReactiveFormsModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([CarEffects]),

@@ -16,6 +16,7 @@ import {
 } from '../actions/car.actions';
 import { selectCarList } from '../selectors/car.selectors';
 import { ICar } from 'src/app/models/car.model';
+import { DocumentReference } from '@angular/fire/firestore';
 
 @Injectable()
 export class CarEffects {
@@ -24,7 +25,7 @@ export class CarEffects {
     ofType<GetCar>(ECarActions.GetCar),
     map(action => action.payload),
     switchMap(index => {
-      return this._carService.getCar(index); // FIXME: Get specific item from Firebase
+      return this._carService.getCar(+index);
     }),
     map(res => {
       console.log('Response from service: ', res);
@@ -46,7 +47,10 @@ export class CarEffects {
     switchMap(car => {
       return this._carService.addNewCar(car);
     }),
-    switchMap((pushId: string) => of(new AddCarSuccess(pushId)))
+    switchMap((pushId: DocumentReference) => {
+      console.log(pushId);
+      return of(new AddCarSuccess(pushId));
+    })
   );
 
   constructor(

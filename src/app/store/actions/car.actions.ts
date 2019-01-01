@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { ICar } from 'src/app/models/car.model';
+import { DocumentReference } from '@angular/fire/firestore';
 
 export enum ECarActions {
   GetCars = '[Car] Get Cars',
@@ -21,7 +22,7 @@ export class GetCarsSuccess implements Action {
 
 export class GetCar implements Action {
   public readonly type = ECarActions.GetCar;
-  constructor(public payload: string) {}
+  constructor(public payload: number) {}
 }
 
 export class GetCarSuccess implements Action {
@@ -36,7 +37,7 @@ export class AddCar implements Action {
 
 export class AddCarSuccess implements Action {
   public readonly type = ECarActions.AddCarSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: DocumentReference) {}
 }
 
 export type CarActions = GetCars | GetCarsSuccess | GetCar | GetCarSuccess | AddCar | AddCarSuccess;
