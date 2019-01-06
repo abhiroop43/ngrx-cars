@@ -23,29 +23,27 @@ export class CarService {
       map(actions => {
         return actions.map(action => {
           const data = action.payload.doc.data() as ICar;
-          const id = data.id;
+          // const id = data.id;
+          const id = action.payload.doc.id;
+          data.id = id;
           return { id, ...data };
         });
       })
     );
   }
 
-  getCar(index: number): Observable<ICar[]> {
-    return this.getCars().pipe(
-      map((cars: ICar[]) => {
-        const filtered = cars.filter(car => car.id === index);
-        return filtered;
-      })
-    );
+  getCar(index: string): Observable<ICar> {
+    // return this._fs.collection<ICar>('cars', ref => ref.where('id', '==', index)).valueChanges();
+    return this.carCollectionRef.doc(index).valueChanges() as Observable<ICar>;
   }
 
   addUpdateCar(car: ICar): Observable<any> {
-    if (car.id === 0) {
-      car.id = new Date().getTime();
+    if (car.id === '0') {
+      car.id = new Date().getTime().toString();
       return from(this.carCollectionRef.add(car));
     } else {
       return from(
-        this.carCollectionRef.doc(car.id.toString()).update({
+        this.carCollectionRef.doc(car.id).update({
           make: car.make,
           model: car.model,
           year: car.year,
@@ -55,5 +53,9 @@ export class CarService {
         })
       );
     }
+  }
+
+  deleteCar(car: ICar): Observable<any> {
+    return from(this.carCollectionRef.doc(car.id).delete());
   }
 }

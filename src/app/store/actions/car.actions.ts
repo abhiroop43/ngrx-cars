@@ -22,7 +22,7 @@ export class GetCarsSuccess implements Action {
 
 export class GetCar implements Action {
   public readonly type = ECarActions.GetCar;
-  constructor(public payload: number) {}
+  constructor(public payload: string) {}
 }
 
 export class GetCarSuccess implements Action {

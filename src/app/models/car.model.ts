@@ -5,5 +5,5 @@ export interface ICar {
   year: number;
   make: string;
   model: string;
-  id: number;
+  id: string;
 }

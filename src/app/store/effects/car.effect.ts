@@ -25,13 +25,13 @@ export class CarEffects {
     ofType<GetCar>(ECarActions.GetCar),
     map(action => action.payload),
     switchMap(index => {
-      return this._carService.getCar(+index);
+      return this._carService.getCar(index);
     }),
     map(res => {
       console.log('Response from service: ', res);
       return res;
     }),
-    switchMap((cars: ICar[]) => of(new GetCarSuccess(cars[0])))
+    switchMap((car: ICar) => of(new GetCarSuccess(car)))
   );
 
   @Effect()

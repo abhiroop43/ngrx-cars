@@ -25,7 +25,7 @@ export class CarsEditComponent implements OnInit, OnDestroy {
   });
 
   // formSub: Subscription;
-  id: number;
+  id: string;
   private routeSub: Subscription;
 
   constructor(
@@ -36,7 +36,7 @@ export class CarsEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSub = this._route.params.subscribe(params => {
-      this.id = +params['id'];
+      this.id = params['id'];
       this._store.dispatch(new GetCar(this.id));
     });
   }

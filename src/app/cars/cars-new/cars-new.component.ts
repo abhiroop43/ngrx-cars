@@ -31,8 +31,7 @@ export class CarsNewComponent implements OnInit {
     const carToSubmit: ICar = this.carCreateForm.value;
 
     // carToSubmit.id = new Date().getTime();
-    carToSubmit.id = 0;
-
+    carToSubmit.id = '0';
 
     carToSubmit.make = this.carCreateForm.value.make;
     carToSubmit.model = this.carCreateForm.value.model;
