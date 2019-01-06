@@ -16,9 +16,10 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { CarService } from './services/car.service';
+import { ConnectCarFormDirective } from './cars/connect-car-form.directive';
 
 @NgModule({
-  declarations: [AppComponent, CarsListComponent, CarsEditComponent],
+  declarations: [AppComponent, CarsListComponent, CarsEditComponent, ConnectCarFormDirective],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),

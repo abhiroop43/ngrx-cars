@@ -1,5 +1,4 @@
-<div *ngIf="(car$ | async) as car">{{ car.model }}</div>
-<form [formGroup]="carEditForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="carEditForm" (ngSubmit)="onSubmit()" [appConnectCarForm]="car$ | async">
   <label> Make: <input type="text" formControlName="make" required /> </label>
 
   <label> Model: <input type="text" formControlName="model" required /> </label>
