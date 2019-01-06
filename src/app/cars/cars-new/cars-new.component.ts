@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IAppState } from 'src/app/store/state/app.state';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { selectSelectedCar } from 'src/app/store/selectors/car.selectors';
 import { GetCar, AddCar } from 'src/app/store/actions/car.actions';
@@ -22,7 +22,11 @@ export class CarsNewComponent implements OnInit {
     color: ['', Validators.required],
     vehicleType: ['', Validators.required]
   });
-  constructor(private _store: Store<IAppState>, private _fb: FormBuilder) {}
+  constructor(
+    private _store: Store<IAppState>,
+    private _fb: FormBuilder,
+    private _router: Router
+  ) {}
 
   ngOnInit() {}
 
@@ -43,5 +47,6 @@ export class CarsNewComponent implements OnInit {
     this._store.dispatch(new AddCar(carToSubmit));
 
     this.carCreateForm.reset();
+    this._router.navigate(['cars']);
   }
 }

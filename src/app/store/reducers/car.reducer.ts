@@ -21,6 +21,9 @@ export const carReducers = (state = initialCarState, action: CarActions): ICarSt
         newCarPushId: action.payload
       };
     }
+    case ECarActions.DeleteCarSuccess: {
+      return state;
+    }
     default:
       return state;
   }

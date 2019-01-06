@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
 import { of } from 'rxjs';
-import { switchMap, map, withLatestFrom } from 'rxjs/operators';
-import { IAppState } from '../state/app.state';
+import { switchMap, map } from 'rxjs/operators';
 import { CarService } from '../../services/car.service';
 import {
   GetCar,
@@ -12,9 +10,10 @@ import {
   GetCars,
   GetCarsSuccess,
   AddCar,
-  AddCarSuccess
+  AddCarSuccess,
+  DeleteCar,
+  DeleteCarSuccess
 } from '../actions/car.actions';
-import { selectCarList } from '../selectors/car.selectors';
 import { ICar } from 'src/app/models/car.model';
 import { DocumentReference } from '@angular/fire/firestore';
 
@@ -24,13 +23,7 @@ export class CarEffects {
   getCar$ = this._action$.pipe(
     ofType<GetCar>(ECarActions.GetCar),
     map(action => action.payload),
-    switchMap(index => {
-      return this._carService.getCar(index);
-    }),
-    map(res => {
-      console.log('Response from service: ', res);
-      return res;
-    }),
+    switchMap(index => this._carService.getCar(index)),
     switchMap((car: ICar) => of(new GetCarSuccess(car)))
   );
 
@@ -44,18 +37,17 @@ export class CarEffects {
   addCar$ = this._action$.pipe(
     ofType<AddCar>(ECarActions.AddCar),
     map(action => action.payload),
-    switchMap(car => {
-      return this._carService.addUpdateCar(car);
-    }),
-    switchMap((pushId: DocumentReference) => {
-      console.log(pushId);
-      return of(new AddCarSuccess(pushId));
-    })
+    switchMap(car => this._carService.addUpdateCar(car)),
+    switchMap((pushId: DocumentReference) => of(new AddCarSuccess(pushId)))
   );
 
-  constructor(
-    private _carService: CarService,
-    private _action$: Actions,
-    private _store: Store<IAppState>
-  ) {}
+  @Effect()
+  deleteCar$ = this._action$.pipe(
+    ofType<DeleteCar>(ECarActions.DeleteCar),
+    map(action => action.payload),
+    switchMap(car => this._carService.deleteCar(car)),
+    switchMap(() => of(new DeleteCarSuccess()))
+  );
+
+  constructor(private _carService: CarService, private _action$: Actions) {}
 }
