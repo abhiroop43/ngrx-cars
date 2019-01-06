@@ -2,45 +2,58 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { ICar } from '../models/car.model';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  DocumentReference,
+  AngularFirestoreCollection
+} from '@angular/fire/firestore';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class CarService {
-  constructor(private _db: AngularFireDatabase, private _fs: AngularFirestore) {}
+  carCollectionRef: AngularFirestoreCollection<ICar>;
+  constructor(private _fs: AngularFirestore) {
+    this.carCollectionRef = this._fs.collection<ICar>('cars');
+  }
 
   getCars(): Observable<ICar[]> {
-    // return <Observable<ICar[]>>this._db.list('cars').valueChanges();
-    return this._fs.collection<ICar>('cars').valueChanges();
+    // return this._fs.collection<ICar>('cars').valueChanges();
+    return this.carCollectionRef.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(action => {
+          const data = action.payload.doc.data() as ICar;
+          const id = data.id;
+          return { id, ...data };
+        });
+      })
+    );
   }
 
   getCar(index: number): Observable<ICar[]> {
-    // return <Observable<ICar>>this._db.object(`cars/${index}`).valueChanges();
-    // console.log('Index is: ', index);
-    return this._fs
-      .collection<ICar>('cars')
-      .valueChanges()
-      .pipe(
-        map((cars: ICar[]) => {
-          const filtered = cars.filter(car => car.id === index);
-          return filtered;
-        })
-      );
-    // return <Observable<ICar[]>>this._db
-    //   .list('cars', ref => ref.equalTo(index, 'id'))
-    //   .valueChanges()
-    //   .pipe(
-    //     map((cars: ICar[]) => {
-    //       const filtered = cars.filter(car => car.id === index);
-    //       return filtered;
-    //     })
-    //   );
+    return this.getCars().pipe(
+      map((cars: ICar[]) => {
+        const filtered = cars.filter(car => car.id === index);
+        return filtered;
+      })
+    );
   }
 
-  addNewCar(car: ICar): Observable<DocumentReference> {
-    return from(this._fs.collection<ICar>('cars').add(car));
-    // return from(this._db.list('cars').push(car));
+  addUpdateCar(car: ICar): Observable<any> {
+    if (car.id === 0) {
+      car.id = new Date().getTime();
+      return from(this.carCollectionRef.add(car));
+    } else {
+      return from(
+        this.carCollectionRef.doc(car.id.toString()).update({
+          make: car.make,
+          model: car.model,
+          year: car.year,
+          plateNumber: car.plateNumber,
+          vehicleType: car.vehicleType,
+          color: car.color
+        })
+      );
+    }
   }
 }

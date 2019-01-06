@@ -45,7 +45,7 @@ export class CarEffects {
     ofType<AddCar>(ECarActions.AddCar),
     map(action => action.payload),
     switchMap(car => {
-      return this._carService.addNewCar(car);
+      return this._carService.addUpdateCar(car);
     }),
     switchMap((pushId: DocumentReference) => {
       console.log(pushId);

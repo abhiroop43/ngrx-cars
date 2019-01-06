@@ -1,0 +1,17 @@
+<form [formGroup]="carCreateForm" (ngSubmit)="onSubmit()">
+  <label> Make: <input type="text" formControlName="make" required /> </label>
+
+  <label> Model: <input type="text" formControlName="model" required /> </label>
+
+  <label> Year: <input type="number" formControlName="year" required /> </label>
+
+  <label> Plate Number: <input type="text" formControlName="plateNumber" required /> </label>
+
+  <label> Color: <input type="color" formControlName="color" required /> </label>
+
+  <label> Vehicle Type: <input type="text" formControlName="vehicleType" required /> </label>
+
+  <p>Form Status: {{ carCreateForm.status }}</p>
+
+  <button type="submit" [disabled]="!carCreateForm.valid">Submit</button>
+</form>

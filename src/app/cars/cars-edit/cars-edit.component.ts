@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IAppState } from 'src/app/store/state/app.state';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { selectSelectedCar } from 'src/app/store/selectors/car.selectors';
 import { GetCar, AddCar } from 'src/app/store/actions/car.actions';
@@ -25,44 +25,32 @@ export class CarsEditComponent implements OnInit, OnDestroy {
   });
 
   // formSub: Subscription;
+  id: number;
+  private routeSub: Subscription;
 
   constructor(
     private _store: Store<IAppState>,
     private _route: ActivatedRoute,
-    private _router: Router,
     private _fb: FormBuilder
   ) {}
 
   ngOnInit() {
-    this._router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        // this._activatedRoute.snapshot is up to date
-        if (this._route.snapshot.params.id !== 'new') {
-          console.log(this._route.snapshot.params.id);
-          this._store.dispatch(new GetCar(this._route.snapshot.params.id));
-          // this.formSub = this.car$.subscribe(car => {
-          //   console.log('Car fetched ', car);
-          //   this.carEditForm.patchValue(car);
-          // });
-        } else {
-          this.carEditForm.reset();
-        }
-      }
+    this.routeSub = this._route.params.subscribe(params => {
+      this.id = +params['id'];
+      this._store.dispatch(new GetCar(this.id));
     });
   }
 
   ngOnDestroy(): void {
-    this.carEditForm.reset();
+    // this.carEditForm.reset();
+    this.routeSub.unsubscribe();
   }
 
   onSubmit() {
     console.log(this.carEditForm.value);
     const carToSubmit: ICar = this.carEditForm.value;
-    if (this._route.snapshot.params.id !== 'new') {
-      carToSubmit.id = this._route.snapshot.params.id;
-    } else {
-      carToSubmit.id = new Date().getTime();
-    }
+    carToSubmit.id = this.id;
+
     carToSubmit.make = this.carEditForm.value.make;
     carToSubmit.model = this.carEditForm.value.model;
     carToSubmit.plateNumber = this.carEditForm.value.plateNumber;
