@@ -7,6 +7,7 @@
     <th>Plate No.</th>
     <th>Vehicle Type</th>
     <th>Color</th>
+    <th>&nbsp;</th>
   </tr>
   <tr *ngFor="let car of (cars$ | async); index as i">
     <td>
@@ -18,6 +19,7 @@
     <td>{{ car.plateNumber }}</td>
     <td>{{ car.vehicleType }}</td>
     <td>{{ car.color }}</td>
+    <td><a (click)="deleteCar(car)">Delete Car</a></td>
   </tr>
 </table>
 
